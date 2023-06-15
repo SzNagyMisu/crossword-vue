@@ -5,26 +5,32 @@ import CrosswordSizeForm from './components/CrosswordSizeForm.vue';
 const STEPS = {
   0: {
     title: "Define size",
+    description: "Set the number of rows and columns",
     dependsOn: [],
   },
   1: {
     title: "Define black cells",
+    description: "Click the cells to make them black - click again to revert",
     dependsOn: [0],
   },
   2: {
     title: "Define solution cells",
+    description: "Click the cells to make them highlighted as the solution line",
     dependsOn: [0],
   },
   3: {
     title: "Add cell numbers",
+    description: "Click the cells to add number to them",
     dependsOn: [0, 1],
   },
   4: {
-    title: "Add words",
+    title: "Add letters",
+    description: "Add letters to the cells that are not black",
     dependsOn: [0, 1],
   },
   5: {
     title: "Add definitions",
+    description: "Add definitions to the numbers",
     dependsOn: [0, 1, 2, 3],
   }
 };
@@ -125,6 +131,7 @@ export default {
     </li>
   </ul>
   <h2>{{ currentStep.title }}</h2>
+  <blockquote>{{ currentStep.description }}</blockquote>
   <CrosswordSizeForm :isActive="stepIdx === 0" :rows="rowsCount" :columns="columnsCount" @rowsChange="setRows" @columnsChange="setColumns" />
   <Table :rows="table" @cellClicked="onCellClicked" />
 </template>
