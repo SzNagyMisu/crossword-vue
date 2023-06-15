@@ -1,5 +1,5 @@
 <script>
-import Table from './components/Table.vue';
+import CrosswordTable from './components/CrosswordTable.vue';
 import CrosswordSizeForm from './components/CrosswordSizeForm.vue';
 
 const STEPS = {
@@ -36,7 +36,7 @@ const STEPS = {
 };
 
 export default {
-  components: {Table, CrosswordSizeForm},
+  components: {CrosswordTable, CrosswordSizeForm},
   data() {
     return {
       steps: Object.values(STEPS),
@@ -133,5 +133,5 @@ export default {
   <h2>{{ currentStep.title }}</h2>
   <blockquote>{{ currentStep.description }}</blockquote>
   <CrosswordSizeForm :isActive="stepIdx === 0" :rows="rowsCount" :columns="columnsCount" @rowsChange="setRows" @columnsChange="setColumns" />
-  <Table :rows="table" @cellClicked="onCellClicked" />
+  <CrosswordTable :rows="table" @cellClicked="onCellClicked" />
 </template>
