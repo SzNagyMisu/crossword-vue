@@ -82,7 +82,28 @@ export default {
         case 2:
           cell.isSolution = !cell.isSolution;
           break;
+        case 3:
+          this.addCellNumberTo(cell);
+          break;
       }
+    },
+    addCellNumberTo (cellClicked) {
+      let currentNr = 1;
+      this.table.forEach(row => {
+        row.forEach(cell => {
+          if (cell === cellClicked) {
+            if (cell.nr != null) {
+              delete cell.nr;
+            } else {
+              cell.nr = currentNr;
+              currentNr++;
+            }
+          } else if (cell.nr != null) {
+            cell.nr = currentNr;
+            currentNr++;
+          }
+        });
+      });
     },
   },
   mounted () {
