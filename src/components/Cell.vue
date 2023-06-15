@@ -5,6 +5,7 @@ export default {
   },
   props: {
     isBlack: Boolean,
+    isSolution: Boolean,
     value: [String, null],
     nr: [Number, null],
   },
@@ -15,7 +16,8 @@ export default {
 </script>
 
 <template>
-  <article :class="{black: isBlack}">
+  <article v-if="isBlack" class="black" />
+  <article v-else :class="{solution: isSolution}">
     <span class="nr" v-if="nr">{{ nr }}</span>
     <span class="value" v-if="value">{{ value }}</span>
   </article>
@@ -32,6 +34,10 @@ export default {
   
   article.black {
     background: black;
+  }
+
+  article.solution {
+    background-color: cornsilk;
   }
   
   span.nr {

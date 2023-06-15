@@ -1,53 +1,107 @@
 <script>
-import Cell from './components/Cell.vue';
+import Table from './components/Table.vue';
+import CrosswordSizeForm from './components/CrosswordSizeForm.vue';
+
+const STEPS = {
+  0: {
+    title: "Define size",
+    dependsOn: [],
+  },
+  1: {
+    title: "Define black cells",
+    dependsOn: [0],
+  },
+  2: {
+    title: "Define solution cells",
+    dependsOn: [0],
+  },
+  3: {
+    title: "Add cell numbers",
+    dependsOn: [0, 1],
+  },
+  4: {
+    title: "Add words",
+    dependsOn: [0, 1],
+  },
+  5: {
+    title: "Add definitions",
+    dependsOn: [0, 1, 2, 3],
+  }
+};
 
 export default {
-  components: {Cell},
+  components: {Table, CrosswordSizeForm},
   data() {
     return {
-      rows: [
-        [{
-          value: 'A',
-          nr: 1,
-        }, {
-          value: 'B',
-        }, {
-          value: 'C',
-          nr: 2,
-        }, {
-          isBlack: true,
-    		}],
-        [{
-          value: 'A',
-          nr: 3,
-        }, {
-          isBlack: true,
-    		}, {
-          value: 'B',
-          nr: 4,
-        }, {
-          value: 'C',
-        }],
-      ]
+      steps: Object.values(STEPS),
+      stepIdx: 0,
+      table: []
     }
+  },
+  computed: {
+    currentStep () {
+      return this.steps[this.stepIdx];
+    },
+    rowsCount () {
+      return this.table.length;
+    },
+    columnsCount () {
+      return this.table[0] ? this.table[0].length : 0;
+    },
+  },
+  methods: {
+    isStepDisabled (step) {
+      // return step.dependsOn.some(dependencyStep => this.stepIdx < dependencyStep)
+    },
+    setRows (rows) {
+      const columns = this.columnsCount;
+      this.setTable(rows, columns);
+    },
+    setColumns (columns) {
+      const rows = this.rowsCount;
+      this.setTable(rows, columns);
+    },
+    setTable (rows, columns) {
+      console.log(rows, columns);
+      const table = [];
+      for (let row = 0; row < rows; row++) {
+        const row = [];
+        for (let col = 0; col < columns; col++) {
+          row.push({});
+        }
+        table.push(row);
+      }
+      this.table = table;
+      console.log(this.table)
+    },
+    onCellClicked ({ cell }) {
+      switch (this.stepIdx) {
+        case 1:
+          cell.isBlack = !cell.isBlack;
+          break;
+        case 2:
+          cell.isSolution = !cell.isSolution;
+          break;
+      }
+    },
+  },
+  mounted () {
+    // console.log(STEPS, this.steps)
   }
 };
 </script>
 
 <template>
-  <section>
-    <section class="row" v-for="row in rows">
-      <Cell
-        v-for="(cell, cellIdx) in row"
-        :key="cellIdx"
-        v-bind="cell"
-      />
-    </section>
-  </section>
+  <h1>Crossword</h1>
+  <ul>
+    <li v-for="(step, idx) in steps" :key="idx">
+      <label>
+        <input type="radio" :value="idx" name="stepNr" :disabled="isStepDisabled(step)" v-model="stepIdx">
+        {{ step.title }}
+      </label>
+    </li>
+  </ul>
+  <h2>{{ currentStep.title }}</h2>
+  <CrosswordSizeForm :isActive="stepIdx === 0" :rows="rowsCount" :columns="columnsCount" @rowsChange="setRows" @columnsChange="setColumns" />
+  <Table :rows="table" @cellClicked="onCellClicked" />
 </template>
-
-<style scoped>
-  section.row {
-    display: flex
-  }
-</style>
