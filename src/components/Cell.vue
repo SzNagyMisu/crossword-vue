@@ -8,9 +8,16 @@ export default {
     isSolution: Boolean,
     value: [String, null],
     nr: [Number, null],
+    isEditable: Boolean,
   },
-  mounted () {
-    // console.log('here');
+  emits: ["input"],
+  methods: {
+    setValue ($event) {
+      this.$emit("input", $event.data.toUpperCase());
+    },
+  },
+  updated () {
+    console.log(this.isEditable)
   }
 }
 </script>
@@ -19,7 +26,7 @@ export default {
   <article v-if="isBlack" class="black" />
   <article v-else :class="{solution: isSolution}">
     <span class="nr" v-if="nr">{{ nr }}</span>
-    <span class="value" v-if="value">{{ value }}</span>
+    <span class="value" :contenteditable="isEditable" @input="setValue">{{ value }}</span>
   </article>
 </template>
 

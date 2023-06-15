@@ -7,7 +7,11 @@ export default {
     rows: {
         type: Array,
         required: true,
-    }
+    },
+    cellsEditable: {
+      required: true,
+      type: Boolean,
+    },
   },
   emits: ["cellClicked"],
   methods: {
@@ -24,8 +28,10 @@ export default {
       <Cell
         v-for="(cell, cellIdx) in row"
         :key="cellIdx"
+        :isEditable="cellsEditable"
         v-bind="cell"
         @click="() => cellClicked(cell)"
+        @input="value => cell.value = value"
       />
     </section>
   </section>

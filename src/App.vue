@@ -68,7 +68,6 @@ export default {
       this.setTable(rows, columns);
     },
     setTable (rows, columns) {
-      console.log(rows, columns);
       const table = [];
       for (let row = 0; row < rows; row++) {
         const row = [];
@@ -78,7 +77,6 @@ export default {
         table.push(row);
       }
       this.table = table;
-      console.log(this.table)
     },
     onCellClicked ({ cell }) {
       switch (this.stepIdx) {
@@ -132,6 +130,16 @@ export default {
   </ul>
   <h2>{{ currentStep.title }}</h2>
   <blockquote>{{ currentStep.description }}</blockquote>
-  <CrosswordSizeForm :isActive="stepIdx === 0" :rows="rowsCount" :columns="columnsCount" @rowsChange="setRows" @columnsChange="setColumns" />
-  <CrosswordTable :rows="table" @cellClicked="onCellClicked" />
+  <CrosswordSizeForm
+    :isActive="stepIdx === 0"
+    :rows="rowsCount"
+    :columns="columnsCount"
+    @rowsChange="setRows"
+    @columnsChange="setColumns"
+  />
+  <CrosswordTable
+    :rows="table"
+    @cellClicked="onCellClicked"
+    :cellsEditable="stepIdx === 4"
+  />
 </template>
