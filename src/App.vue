@@ -91,6 +91,8 @@ export default {
       let currentNr = 1;
       this.table.forEach(row => {
         row.forEach(cell => {
+          if (cell.isBlack) return;
+
           if (cell === cellClicked) {
             if (cell.nr != null) {
               delete cell.nr;
