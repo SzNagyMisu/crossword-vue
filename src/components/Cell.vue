@@ -1,19 +1,31 @@
 <script>
 export default {
+  expose: ["focus", "row", "col"],
   data () {
     return {};
   },
   props: {
+    row: Number,
+    col: Number,
     isBlack: Boolean,
     isSolution: Boolean,
     value: [String, null],
     nr: [Number, null],
     isEditable: Boolean,
   },
-  emits: ["input"],
+  emits: ["input", "navigate"],
   methods: {
     setValue ($event) {
       this.$emit("input", $event.data.toUpperCase());
+    },
+    navigate ($event) {
+      const key = $event.key;
+      if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(key)) {
+        this.$emit("navigate", key);
+      }
+    },
+    focus () {
+      this.$refs.value.focus();
     },
   },
 }
@@ -23,7 +35,13 @@ export default {
   <article v-if="isBlack" class="black" />
   <article v-else :class="{solution: isSolution}">
     <span class="nr" v-if="nr">{{ nr }}</span>
-    <span class="value" :contenteditable="isEditable" @input="setValue">{{ value }}</span>
+    <span
+      class="value"
+      ref="value"
+      :contenteditable="isEditable"
+      @input="setValue"
+      @keydown="navigate"
+    >{{ value }}</span>
   </article>
 </template>
 
