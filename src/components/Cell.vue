@@ -16,12 +16,23 @@ export default {
   emits: ["input", "navigate"],
   methods: {
     setValue ($event) {
-      this.$emit("input", $event.data.toUpperCase());
+      const letter = $event.data;
+      if (letter) {
+        this.$emit("input", letter.toUpperCase());
+      }
     },
-    navigate ($event) {
+    onKeyDown ($event) {
       const key = $event.key;
-      if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(key)) {
-        this.$emit("navigate", key);
+      switch (key) {
+        case "ArrowUp":
+        case "ArrowDown":
+        case "ArrowLeft":
+        case "ArrowRight":
+          this.$emit("navigate", key);
+          break;
+        case "Backspace":
+        case "Delete":
+          this.$emit("input", "");
       }
     },
     focus () {
@@ -40,7 +51,7 @@ export default {
       ref="value"
       :contenteditable="isEditable"
       @input="setValue"
-      @keydown="navigate"
+      @keydown="onKeyDown"
     >{{ value }}</span>
   </article>
 </template>
