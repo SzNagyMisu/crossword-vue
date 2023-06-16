@@ -97,7 +97,6 @@ export default {
 <template>
   <h1>Crossword</h1>
 
-  <input type="number" v-model="stepIdx">
   <StepIndicator
     :steps="steps"
     :currentStep="stepIdx"
