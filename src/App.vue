@@ -1,4 +1,5 @@
 <script>
+import ImportJSON from './components/ImportJSON.vue';
 import StepIndicator from './components/StepIndicator.vue';
 
 import SetSize from './components/steps/SetSize.vue';
@@ -8,35 +9,9 @@ import AddNumbers from './components/steps/AddNumbers.vue'
 import AddLetters from './components/steps/AddLetters.vue';
 import AddDefinitions from './components/steps/AddDefinitions.vue';
 
-const STEPS = {
-  0: {
-    title: "Define size",
-    description: "Set the number of rows and columns",
-  },
-  1: {
-    title: "Define black cells",
-    description: "Click the cells to make them black - click again to revert",
-  },
-  2: {
-    title: "Define solution cells",
-    description: "Click the cells to make them highlighted as the solution line",
-  },
-  3: {
-    title: "Add cell numbers",
-    description: "Click the cells to add number to them",
-  },
-  4: {
-    title: "Add letters",
-    description: "Add letters to the cells that are not black",
-  },
-  5: {
-    title: "Add definitions",
-    description: "Add definitions to the numbers",
-  },
-};
-
 export default {
   components: {
+    ImportJSON,
     StepIndicator,
 
     SetSize,
@@ -49,19 +24,15 @@ export default {
   data() {
     return {
       _mounted: false,
-      steps: Object.values(STEPS),
       stepIdx: 0,
       table: [],
-      definitions: { //TODO
+      definitions: {
         horizontal: {},
         vertical: {},
       },
     }
   },
   computed: {
-    currentStep () {
-      return this.steps[this.stepIdx];
-    },
     isCurrentStepValid() {
       return this._mounted && this.$refs.currentStep.isValid;
     },
@@ -73,6 +44,22 @@ export default {
     incrementStepIdx() {
       this.stepIdx++;
     },
+    showPrintPreview() {
+      //TODO
+    },
+    save() {
+      console.log(JSON.stringify({
+        stepIdx: this.stepIdx,
+        table: this.table,
+        definitions: this.definitions,
+      }));
+    },
+    importJSON(json) {
+      const data = JSON.parse(json);
+      this.stepIdx = data.stepIdx;
+      this.table = data.table;
+      this.definitions = data.definitions;
+    }
   },
   mounted() {
     this._mounted = true;
@@ -97,15 +84,21 @@ export default {
 <template>
   <h1>Crossword</h1>
 
+  <ImportJSON @importJSON="importJSON"/>
+
+  <input
+      type="button"
+      class="primary"
+      value="Save"
+      @click="save"
+  >
+
   <StepIndicator
-    :steps="steps"
-    :currentStep="stepIdx"
+    :stepIdx="stepIdx"
     :isCurrentStepValid="isCurrentStepValid"
     @nextStep="incrementStepIdx"
+    @finish="showPrintPreview"
   />
-
-  <h2>{{ currentStep.title }}</h2>
-  <blockquote>{{ currentStep.description }}</blockquote>
 
   <SetSize             v-if="stepIdx === 0" ref="currentStep" :table="table" @setTable="setTable" />
   <BlackCells     v-else-if="stepIdx === 1" ref="currentStep" :table="table" />

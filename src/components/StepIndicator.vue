@@ -1,12 +1,8 @@
 <script>
 export default {
-    emits: ["nextStep"],
+    emits: ["nextStep", "finish"],
     props: {
-        steps: {
-            type: Object,
-            required: true,
-        },
-        currentStep: {
+        stepIdx: {
             type: Number,
             required: true,
         },
@@ -16,13 +12,45 @@ export default {
         },
     },
     data () {
-        return {};
+        return {
+            steps: [
+                {
+                    title: "Define size",
+                    description: "Set the number of rows and columns",
+                },
+                {
+                    title: "Define black cells",
+                    description: "Click the cells to make them black - click again to revert",
+                },
+                {
+                    title: "Define solution cells",
+                    description: "Click the cells to make them highlighted as the solution line",
+                },
+                {
+                    title: "Add cell numbers",
+                    description: "Click the cells to add number to them",
+                },
+                {
+                    title: "Add letters",
+                    description: "Add letters to the cells that are not black",
+                },
+                {
+                    title: "Add definitions",
+                    description: "Add definitions to the numbers",
+                },
+            ]
+        };
+    },
+    computed: {
+        currentStep() {
+            return this.steps[this.stepIdx];
+        },
     },
     methods: {
         stepState(stepNr) {
-            if (stepNr < this.currentStep) {
+            if (stepNr < this.stepIdx) {
                 return "done";
-            } else if (stepNr === this.currentStep) {
+            } else if (stepNr === this.stepIdx) {
                 return "active";
             } else {
                 return "pending"
@@ -30,6 +58,9 @@ export default {
         },
         nextStep() {
             this.$emit("nextStep");
+        },
+        finish() {
+            this.$emit("finish");
         },
     },
 }
@@ -45,7 +76,25 @@ export default {
         >{{ step.title }}</li>
     </ul>
 
-    <input type="button" :disabled="!isCurrentStepValid" class="success" value="Next" @click="nextStep">
+    <input
+        v-if="stepIdx < steps.length - 1"
+        type="button"
+        :disabled="!isCurrentStepValid"
+        class="success"
+        value="Next"
+        @click="nextStep"
+    >
+    <input
+        v-else
+        type="button"
+        :disabled="!isCurrentStepValid"
+        class="success"
+        value="Done"
+        @click="finish"
+    >
+
+    <h2>{{ currentStep.title }}</h2>
+    <blockquote>{{ currentStep.description }}</blockquote>
 </template>
 
 <style scoped>
@@ -65,8 +114,6 @@ li.pending {
 input[type=button].success {
     background-color: green;
     border: 1px greenyellow solid;
-    border-radius: 4px;
-    padding: 4px 16px;
     color: white;
     cursor: pointer;
 }
