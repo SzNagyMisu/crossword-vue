@@ -1,5 +1,6 @@
 <script>
 import ImportJSON from './components/ImportJSON.vue';
+import ExportJSON from './components/ExportJSON.vue';
 import StepIndicator from './components/StepIndicator.vue';
 
 import SetSize from './components/steps/SetSize.vue';
@@ -12,6 +13,7 @@ import AddDefinitions from './components/steps/AddDefinitions.vue';
 export default {
   components: {
     ImportJSON,
+    ExportJSON,
     StepIndicator,
 
     SetSize,
@@ -34,6 +36,7 @@ export default {
   },
   computed: {
     isCurrentStepValid() {
+      // TODO doesn't get reevaluated on import
       return this._mounted && this.$refs.currentStep.isValid;
     },
   },
@@ -47,16 +50,9 @@ export default {
     showPrintPreview() {
       //TODO
     },
-    save() {
-      console.log(JSON.stringify({
-        stepIdx: this.stepIdx,
-        table: this.table,
-        definitions: this.definitions,
-      }));
-    },
     importJSON(json) {
       const data = JSON.parse(json);
-      this.stepIdx = data.stepIdx;
+      this.stepIdx = +data.stepIdx;
       this.table = data.table;
       this.definitions = data.definitions;
     }
@@ -84,14 +80,8 @@ export default {
 <template>
   <h1>Crossword</h1>
 
-  <ImportJSON @importJSON="importJSON"/>
-
-  <input
-      type="button"
-      class="primary"
-      value="Save"
-      @click="save"
-  >
+  <ImportJSON @importJSON="importJSON" />
+  <ExportJSON v-bind="{ stepIdx, table, definitions }" />
 
   <StepIndicator
     :stepIdx="stepIdx"
