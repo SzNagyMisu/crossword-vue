@@ -16,9 +16,6 @@ export default {
       this.$emit("input", $event.data.toUpperCase());
     },
   },
-  updated () {
-    console.log(this.isEditable)
-  }
 }
 </script>
 
