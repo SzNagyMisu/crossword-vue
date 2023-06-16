@@ -1,4 +1,6 @@
 <script>
+import StepIndicator from './components/StepIndicator.vue';
+
 import SetSize from './components/steps/SetSize.vue';
 import BlackCells from './components/steps/BlackCells.vue';
 import SolutionCells from './components/steps/SolutionCells.vue';
@@ -10,37 +12,33 @@ const STEPS = {
   0: {
     title: "Define size",
     description: "Set the number of rows and columns",
-    dependsOn: [],
   },
   1: {
     title: "Define black cells",
     description: "Click the cells to make them black - click again to revert",
-    dependsOn: [0],
   },
   2: {
     title: "Define solution cells",
     description: "Click the cells to make them highlighted as the solution line",
-    dependsOn: [0],
   },
   3: {
     title: "Add cell numbers",
     description: "Click the cells to add number to them",
-    dependsOn: [0, 1],
   },
   4: {
     title: "Add letters",
     description: "Add letters to the cells that are not black",
-    dependsOn: [0, 1],
   },
   5: {
     title: "Add definitions",
     description: "Add definitions to the numbers",
-    dependsOn: [0, 1, 2, 3],
-  }
+  },
 };
 
 export default {
   components: {
+    StepIndicator,
+
     SetSize,
     BlackCells,
     SolutionCells,
@@ -50,12 +48,13 @@ export default {
   },
   data() {
     return {
+      _mounted: false,
       steps: Object.values(STEPS),
       stepIdx: 0,
       table: [],
       definitions: { //TODO
-        horizontal: {1: "", 2: ""},
-        vertical: {2: "", 3: ""},
+        horizontal: {},
+        vertical: {},
       },
     }
   },
@@ -63,13 +62,33 @@ export default {
     currentStep () {
       return this.steps[this.stepIdx];
     },
+    isCurrentStepValid() {
+      return this._mounted && this.$refs.currentStep.isValid;
+    },
   },
   methods: {
-    isStepDisabled (step) {
-      return false;
-    },
     setTable (table) {
       this.table = table;
+    },
+    incrementStepIdx() {
+      this.stepIdx++;
+    },
+  },
+  mounted() {
+    this._mounted = true;
+  },
+  watch: {
+    stepIdx(_newValue, oldValue) {
+      if (oldValue === 3) {
+        this.table.forEach(row => {
+          row.forEach(cell => {
+            if (cell.nr) {
+              this.definitions.horizontal[cell.nr] = "";
+              this.definitions.vertical[cell.nr] = "";
+            }
+          });
+        });
+      }
     },
   },
 };
@@ -77,21 +96,22 @@ export default {
 
 <template>
   <h1>Crossword</h1>
-  <ul>
-    <li v-for="(step, idx) in steps" :key="idx">
-      <label>
-        <input type="radio" :value="idx" name="stepNr" :disabled="isStepDisabled(step)" v-model="stepIdx">
-        {{ step.title }}
-      </label>
-    </li>
-  </ul>
+
+  <input type="number" v-model="stepIdx">
+  <StepIndicator
+    :steps="steps"
+    :currentStep="stepIdx"
+    :isCurrentStepValid="isCurrentStepValid"
+    @nextStep="incrementStepIdx"
+  />
+
   <h2>{{ currentStep.title }}</h2>
   <blockquote>{{ currentStep.description }}</blockquote>
 
-  <SetSize v-if="stepIdx === 0" :table="table" @setTable="setTable"/>
-  <BlackCells v-if="stepIdx === 1" :table="table" />
-  <SolutionCells v-if="stepIdx === 2" :table="table" />
-  <AddNumbers v-if="stepIdx === 3" :table="table" />
-  <AddLetters v-if="stepIdx === 4" :table="table" />
-  <AddDefinitions v-if="stepIdx === 5" :table="table" :definitions="definitions" />
+  <SetSize             v-if="stepIdx === 0" ref="currentStep" :table="table" @setTable="setTable" />
+  <BlackCells     v-else-if="stepIdx === 1" ref="currentStep" :table="table" />
+  <SolutionCells  v-else-if="stepIdx === 2" ref="currentStep" :table="table" />
+  <AddNumbers     v-else-if="stepIdx === 3" ref="currentStep" :table="table" />
+  <AddLetters     v-else-if="stepIdx === 4" ref="currentStep" :table="table" />
+  <AddDefinitions v-else-if="stepIdx === 5" ref="currentStep" :table="table" :definitions="definitions" />
 </template>
