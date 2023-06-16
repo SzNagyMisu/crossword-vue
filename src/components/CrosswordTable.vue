@@ -16,7 +16,7 @@ export default {
   emits: ["cellClicked"],
   methods: {
     onCellClicked (cell) {
-      this.$emit("cellClicked", { cell });
+      this.$emit("cellClicked", cell);
     },
     setCellValue (cell, value) {
       cell.value = value;

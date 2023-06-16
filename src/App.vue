@@ -1,6 +1,10 @@
 <script>
-import CrosswordTable from './components/CrosswordTable.vue';
-import CrosswordSizeForm from './components/CrosswordSizeForm.vue';
+import SetSize from './components/steps/SetSize.vue';
+import BlackCells from './components/steps/BlackCells.vue';
+import SolutionCells from './components/steps/SolutionCells.vue';
+import AddNumbers from './components/steps/AddNumbers.vue'
+import AddLetters from './components/steps/AddLetters.vue';
+import AddDefinitions from './components/steps/AddDefinitions.vue';
 
 const STEPS = {
   0: {
@@ -36,80 +40,36 @@ const STEPS = {
 };
 
 export default {
-  components: {CrosswordTable, CrosswordSizeForm},
+  components: {
+    SetSize,
+    BlackCells,
+    SolutionCells,
+    AddNumbers,
+    AddLetters,
+    AddDefinitions
+  },
   data() {
     return {
       steps: Object.values(STEPS),
       stepIdx: 0,
-      table: []
+      table: [],
+      definitions: { //TODO
+        horizontal: {1: "", 2: ""},
+        vertical: {2: "", 3: ""},
+      },
     }
   },
   computed: {
     currentStep () {
       return this.steps[this.stepIdx];
     },
-    rowsCount () {
-      return this.table.length;
-    },
-    columnsCount () {
-      return this.table[0] ? this.table[0].length : 0;
-    },
   },
   methods: {
     isStepDisabled (step) {
-      // return step.dependsOn.some(dependencyStep => this.stepIdx < dependencyStep)
+      return false;
     },
-    setRows (rows) {
-      const columns = this.columnsCount;
-      this.setTable(rows, columns);
-    },
-    setColumns (columns) {
-      const rows = this.rowsCount;
-      this.setTable(rows, columns);
-    },
-    setTable (rows, columns) {
-      const table = [];
-      for (let row = 0; row < rows; row++) {
-        const row = [];
-        for (let col = 0; col < columns; col++) {
-          row.push({});
-        }
-        table.push(row);
-      }
+    setTable (table) {
       this.table = table;
-    },
-    onCellClicked ({ cell }) {
-      switch (this.stepIdx) {
-        case 1:
-          cell.isBlack = !cell.isBlack;
-          break;
-        case 2:
-          cell.isSolution = !cell.isSolution;
-          break;
-        case 3:
-          this.addCellNumberTo(cell);
-          break;
-      }
-    },
-    addCellNumberTo (cellClicked) {
-      let currentNr = 1;
-      this.table.forEach(row => {
-        row.forEach(cell => {
-          if (cell.isBlack) return;
-
-          if (cell === cellClicked) {
-            if (cell.nr != null) {
-              delete cell.nr;
-            } else {
-              cell.nr = currentNr;
-              currentNr++;
-            }
-          } else if (cell.nr != null) {
-            cell.nr = currentNr;
-            currentNr++;
-          }
-        });
-      });
     },
   },
 };
@@ -127,16 +87,11 @@ export default {
   </ul>
   <h2>{{ currentStep.title }}</h2>
   <blockquote>{{ currentStep.description }}</blockquote>
-  <CrosswordSizeForm
-    :isActive="stepIdx === 0"
-    :rows="rowsCount"
-    :columns="columnsCount"
-    @rowsChange="setRows"
-    @columnsChange="setColumns"
-  />
-  <CrosswordTable
-    :rows="table"
-    @cellClicked="onCellClicked"
-    :cellsEditable="stepIdx === 4"
-  />
+
+  <SetSize v-if="stepIdx === 0" :table="table" @setTable="setTable"/>
+  <BlackCells v-if="stepIdx === 1" :table="table" />
+  <SolutionCells v-if="stepIdx === 2" :table="table" />
+  <AddNumbers v-if="stepIdx === 3" :table="table" />
+  <AddLetters v-if="stepIdx === 4" :table="table" />
+  <AddDefinitions v-if="stepIdx === 5" :table="table" :definitions="definitions" />
 </template>
