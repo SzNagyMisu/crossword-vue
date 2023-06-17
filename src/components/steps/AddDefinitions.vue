@@ -20,7 +20,14 @@ export default {
     },
     computed: {
         isValid() {
-            return true; // TODO all numbers have at least one definition
+            // return true;
+            return this.table.every(row => (
+                row.every(cell => (
+                    !cell.nr
+                        || this.definitions.horizontal[cell.nr]
+                        || this.definitions.vertical[cell.nr]
+                ))
+            ));
         },
     },
     methods: {

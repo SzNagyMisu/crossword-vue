@@ -17,6 +17,9 @@ export default {
         removeDefinition(dimension, nr) {
             this.$emit("removeDefinition", dimension, nr);
         },
+        newDefinition(dimension) {
+            // TODO
+        },
     },
 }
 </script>
