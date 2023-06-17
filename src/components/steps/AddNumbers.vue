@@ -19,6 +19,19 @@ export default {
         },
     },
     methods: {
+        autoAddNumbers() {
+            let currentNr = 1;
+            this.table.forEach((row, rowIdx) => {
+                row.forEach((cell, colIdx) => {
+                    const isHorizontalStart = colIdx === 0 || this.table[rowIdx][colIdx - 1].isBlack;
+                    const isVerticalStart = rowIdx === 0 || this.table[rowIdx - 1][colIdx].isBlack;
+                    if (isHorizontalStart || isVerticalStart) {
+                        cell.nr = currentNr;
+                        currentNr++;
+                    }
+                });
+            });
+        },
         onCellClicked(cellClicked) {
             let currentNr = 1;
             this.table.forEach(row => {
@@ -44,6 +57,7 @@ export default {
 </script>
 
 <template>
+    <input type="button" value="Add numbers" @click="autoAddNumbers">
     <CrosswordTable
         :rows="table"
         :cellsEditable="false"

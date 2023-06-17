@@ -63,11 +63,13 @@ export default {
   watch: {
     stepIdx(_newValue, oldValue) {
       if (oldValue === 3) {
-        this.table.forEach(row => {
-          row.forEach(cell => {
+        this.table.forEach((row, rowIdx) => {
+          row.forEach((cell, colIdx) => {
+            const isHorizontalStart = colIdx === 0 || this.table[rowIdx][colIdx - 1].isBlack;
+            const isVerticalStart = rowIdx === 0 || this.table[rowIdx - 1][colIdx].isBlack;
             if (cell.nr) {
-              this.definitions.horizontal[cell.nr] = "";
-              this.definitions.vertical[cell.nr] = "";
+              if (isHorizontalStart) this.definitions.horizontal[cell.nr] = "";
+              if (isVerticalStart) this.definitions.vertical[cell.nr] = "";
             }
           });
         });
