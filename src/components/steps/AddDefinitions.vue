@@ -23,6 +23,14 @@ export default {
             return true; // TODO all numbers have at least one definition
         },
     },
+    methods: {
+        setDefinition(dimension, nr, value) {
+            this.definitions[dimension][nr] = value;
+        },
+        removeDefinition(dimension, nr) {
+            delete this.definitions[dimension][nr];
+        },
+    },
 }
 </script>
 
@@ -33,5 +41,7 @@ export default {
     />
     <Definitions
         :definitions="definitions"
+        @setDefinition="setDefinition"
+        @removeDefinition="removeDefinition"
     />
 </template>

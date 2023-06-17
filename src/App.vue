@@ -55,7 +55,7 @@ export default {
       this.stepIdx = +data.stepIdx;
       this.table = data.table;
       this.definitions = data.definitions;
-    }
+    },
   },
   mounted() {
     this._mounted = true;
