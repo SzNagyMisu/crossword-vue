@@ -23,6 +23,8 @@ export default {
             let currentNr = 1;
             this.table.forEach((row, rowIdx) => {
                 row.forEach((cell, colIdx) => {
+                    if (cell.isBlack) return;
+
                     const isHorizontalStart = colIdx === 0 || this.table[rowIdx][colIdx - 1].isBlack;
                     const isVerticalStart = rowIdx === 0 || this.table[rowIdx - 1][colIdx].isBlack;
                     if (isHorizontalStart || isVerticalStart) {
