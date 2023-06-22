@@ -33,3 +33,12 @@ export default {
         </fieldset>
     </form>
 </template>
+
+<style scoped>
+textarea {
+    display: block;
+    min-width: 50%;
+    height: 250px;
+    overflow-y: auto;
+}
+</style>
