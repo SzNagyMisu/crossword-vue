@@ -3,7 +3,6 @@ import CrosswordTable from '../CrosswordTable.vue';
 
 export default {
     components: {CrosswordTable},
-    expose: ["isValid"],
     props: {
         table: {
             type: Array,
@@ -11,12 +10,7 @@ export default {
         },
     },
     data () {
-        return {}
-    },
-    computed: {
-        isValid() {
-            return true; // TODO all numbers have row or col value 0 or preceeded by a black
-        },
+        return {};
     },
     methods: {
         autoAddNumbers() {

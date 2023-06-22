@@ -4,7 +4,6 @@ import Definitions from '../Definitions.vue';
 
 export default {
     components: {CrosswordTable, Definitions},
-    expose: ["isValid"],
     props: {
         table: {
             type: Array,
@@ -17,18 +16,6 @@ export default {
     },
     data () {
         return {}
-    },
-    computed: {
-        isValid() {
-            // return true;
-            return this.table.every(row => (
-                row.every(cell => (
-                    !cell.nr
-                        || this.definitions.horizontal[cell.nr]
-                        || this.definitions.vertical[cell.nr]
-                ))
-            ));
-        },
     },
     methods: {
         setDefinition(dimension, nr, value) {

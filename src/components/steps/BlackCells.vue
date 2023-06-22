@@ -3,7 +3,6 @@ import CrosswordTable from '../CrosswordTable.vue';
 
 export default {
     components: {CrosswordTable},
-    expose: ["isValid"],
     props: {
         table: {
             type: Array,
@@ -11,9 +10,7 @@ export default {
         },
     },
     data () {
-        return {
-            isValid: true,
-        };
+        return {};
     },
     methods: {
         onCellClicked(cell) {

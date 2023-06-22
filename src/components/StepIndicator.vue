@@ -6,9 +6,13 @@ export default {
             type: Number,
             required: true,
         },
-        isCurrentStepValid: {
-            type: Boolean,
-            required: false,
+        table: {
+            type: Array,
+            required: true,
+        },
+        definitions: {
+            type: Object,
+            required: true,
         },
     },
     data () {
@@ -17,26 +21,44 @@ export default {
                 {
                     title: "Define size",
                     description: "Set the number of rows and columns",
+                    isValid({ table }) {
+                        return table.length && table[0].length;
+                    },
                 },
                 {
                     title: "Define black cells",
                     description: "Click the cells to make them black - click again to revert",
+                    isValid() {
+                        return true;
+                    },
                 },
                 {
                     title: "Define solution cells",
                     description: "Click the cells to make them highlighted as the solution line",
+                    isValid() {
+                        return true;
+                    },
                 },
                 {
                     title: "Add cell numbers",
                     description: "Click the cells to add number to them",
+                    isValid() {
+                        return true;
+                    },
                 },
                 {
                     title: "Add letters",
                     description: "Add letters to the cells that are not black",
+                    isValid({ table }) {
+                        return table.every(row => row.every(cell => cell.isBlack || cell.value != null));
+                    },
                 },
                 {
                     title: "Add definitions",
                     description: "Add definitions to the numbers",
+                    isValid({ table, definitions }) {
+                        return table.every(row => row.every(cell => !cell.nr || definitions.horizontal[cell.nr] || definitions.vertical[cell.nr]));
+                    },
                 },
             ]
         };
@@ -44,6 +66,12 @@ export default {
     computed: {
         currentStep() {
             return this.steps[this.stepIdx];
+        },
+        isCurrentStepValid() {
+            return this.currentStep.isValid({
+                table: this.table,
+                definitions: this.definitions,
+            });
         },
     },
     methods: {

@@ -5,7 +5,6 @@ import CrosswordTable from '../CrosswordTable.vue';
 export default {
     components: {CrosswordSizeForm, CrosswordTable},
     emits: ["setTable"],
-    expose: ["isValid"],
     props: {
         table: {
             type: Array,
@@ -13,7 +12,7 @@ export default {
         },
     },
     data () {
-        return {}
+        return {};
     },
     computed: {
         rowsCount() {
@@ -22,9 +21,6 @@ export default {
         columnsCount() {
             return this.table[0] ? this.table[0].length : 0;
         },
-        isValid() {
-            return this.rowsCount > 0 && this.columnsCount > 0;
-        }
     },
     methods: {
         setRows(rows) {

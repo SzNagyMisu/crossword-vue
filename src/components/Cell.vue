@@ -1,6 +1,6 @@
 <script>
 export default {
-  expose: ["focus", "row", "col"],
+  expose: ["focus", "row", "col", "value"],
   data () {
     return {};
   },

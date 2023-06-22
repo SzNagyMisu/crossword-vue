@@ -34,12 +34,6 @@ export default {
       },
     }
   },
-  computed: {
-    isCurrentStepValid() {
-      // TODO doesn't get reevaluated on import
-      return this._mounted && this.$refs.currentStep.isValid;
-    },
-  },
   methods: {
     setTable (table) {
       this.table = table;
@@ -52,7 +46,7 @@ export default {
     },
     importJSON(json) {
       const data = JSON.parse(json);
-      this.stepIdx = +data.stepIdx;
+      this.stepIdx = data.stepIdx;
       this.table = data.table;
       this.definitions = data.definitions;
     },
@@ -86,16 +80,15 @@ export default {
   <ExportJSON v-bind="{ stepIdx, table, definitions }" />
 
   <StepIndicator
-    :stepIdx="stepIdx"
-    :isCurrentStepValid="isCurrentStepValid"
+    v-bind="{ stepIdx, table, definitions }"
     @nextStep="incrementStepIdx"
     @finish="showPrintPreview"
   />
 
-  <SetSize             v-if="stepIdx === 0" ref="currentStep" :table="table" @setTable="setTable" />
-  <BlackCells     v-else-if="stepIdx === 1" ref="currentStep" :table="table" />
-  <SolutionCells  v-else-if="stepIdx === 2" ref="currentStep" :table="table" />
-  <AddNumbers     v-else-if="stepIdx === 3" ref="currentStep" :table="table" />
-  <AddLetters     v-else-if="stepIdx === 4" ref="currentStep" :table="table" />
-  <AddDefinitions v-else-if="stepIdx === 5" ref="currentStep" :table="table" :definitions="definitions" />
+  <SetSize             v-if="stepIdx === 0" :table="table" @setTable="setTable" />
+  <BlackCells     v-else-if="stepIdx === 1" :table="table" />
+  <SolutionCells  v-else-if="stepIdx === 2" :table="table" />
+  <AddNumbers     v-else-if="stepIdx === 3" :table="table" />
+  <AddLetters     v-else-if="stepIdx === 4" :table="table" />
+  <AddDefinitions v-else-if="stepIdx === 5" :table="table" :definitions="definitions" />
 </template>
