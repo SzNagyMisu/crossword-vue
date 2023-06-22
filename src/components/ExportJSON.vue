@@ -8,6 +8,7 @@ export default {
     data() {
         return {
             showJSON: false,
+            copyButtonText: "Copy",
         };
     },
     computed: {
@@ -18,11 +19,13 @@ export default {
                 definitions: this.definitions,
             };
         },
-        jsonString() {
-            return JSON.stringify(this.jsonObject);
-        },
         copyJSON() {
-            navigator.clipboard.writeText(this.jsonString); // TODO not working
+            const jsonContainer = this.$refs.JSONContainer;
+            jsonContainer.select();
+            navigator.clipboard.writeText(jsonContainer.value);
+            jsonContainer.blur();
+            this.copyButtonText = "Copied!";
+            setTimeout(() => this.copyButtonText = "Copy", 5000);
         },
     },
 }
@@ -31,16 +34,17 @@ export default {
 <template>
     <input v-if="!showJSON" type="button" value="Export JSON" @click="showJSON = true">
     <section v-else>
-        <pre>{{ jsonObject }}</pre>
-        <input type="button" value="Copy" @click="copyJSON">
+        <textarea ref="JSONContainer">{{ jsonObject }}</textarea>
+        <input type="button" :value="copyButtonText" @click="copyJSON">
         <input type="button" value="Done" @click="showJSON = false">
     </section>
 </template>
 
 <style scoped>
-pre {
-    border: 1px solid black;
-    max-height: 250px;
+textarea {
+    display: block;
+    min-width: 50%;
+    height: 250px;
     overflow-y: auto;
 }
 </style>
