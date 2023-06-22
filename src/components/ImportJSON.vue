@@ -8,8 +8,7 @@ export default {
         };
     },
     methods: {
-        importJSON($event) {
-            $event.preventDefault();
+        importJSON() {
             this.$emit("importJSON", this.json);
             this.onFormReset();
         },
@@ -23,7 +22,7 @@ export default {
 
 <template>
     <input v-if="!showForm" type="button" value="Import JSON" @click="showForm = true">
-    <form v-else @submit="importJSON" @reset="onFormReset">
+    <form v-else @submit.prevent="importJSON" @reset="onFormReset">
         <fieldset>
             <textarea cols="30" rows="10" v-model="json" />
         </fieldset>
