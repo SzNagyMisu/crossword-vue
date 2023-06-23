@@ -35,7 +35,6 @@ const onKeyDown = $event => {
     }
 };
 const focus = () => {
-    console.log(valueRef);
     valueRef.value.focus();
 };
 
