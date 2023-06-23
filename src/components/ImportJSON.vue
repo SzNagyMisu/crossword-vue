@@ -24,7 +24,7 @@ export default {
     <input v-if="!showForm" type="button" value="Import JSON" @click="showForm = true">
     <form v-else @submit.prevent="importJSON" @reset="onFormReset">
         <fieldset>
-            <textarea cols="30" rows="10" v-model="json" />
+            <textarea v-model="json" />
         </fieldset>
         <fieldset>
             <input type="submit" value="Import">

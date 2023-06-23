@@ -1,45 +1,50 @@
-<script>
-export default {
-    expose: ["focus", "row", "col", "value"],
-    data() {
-        return {};
-    },
-    props: {
-        row: Number,
-        col: Number,
-        isBlack: Boolean,
-        isSolution: Boolean,
-        value: [String, null],
-        nr: [Number, null],
-        isEditable: Boolean,
-    },
-    emits: ["input", "navigate"],
-    methods: {
-        setValue($event) {
-            const letter = $event.data;
-            if (letter) {
-                this.$emit("input", letter.toUpperCase());
-            }
-        },
-        onKeyDown($event) {
-            const key = $event.key;
-            switch (key) {
-                case "ArrowUp":
-                case "ArrowDown":
-                case "ArrowLeft":
-                case "ArrowRight":
-                    this.$emit("navigate", key);
-                    break;
-                case "Backspace":
-                case "Delete":
-                    this.$emit("input", "");
-            }
-        },
-        focus() {
-            this.$refs.value.focus();
-        },
-    },
-}
+<script setup>
+import { ref } from 'vue';
+
+const props = defineProps({
+    row: Number,
+    col: Number,
+    isBlack: Boolean,
+    isSolution: Boolean,
+    value: [String, null],
+    nr: [Number, null],
+    isEditable: Boolean,
+});
+const emit = defineEmits(["input", "navigate"]);
+
+const valueRef = ref(null);
+
+const setValue = ($event) => {
+    const letter = $event.data;
+    if (letter) {
+        emit("input", letter.toUpperCase());
+    }
+};
+const onKeyDown = $event => {
+    const key = $event.key;
+    switch (key) {
+        case "ArrowUp":
+        case "ArrowDown":
+        case "ArrowLeft":
+        case "ArrowRight":
+            emit("navigate", key);
+            break;
+        case "Backspace":
+        case "Delete":
+            emit("input", "");
+    }
+};
+const focus = () => {
+    console.log(valueRef);
+    valueRef.value.focus();
+};
+
+defineExpose({
+    focus,
+    row: props.row,
+    col: props.col,
+    value: props.value,
+});
 </script>
 
 <template>
@@ -48,7 +53,7 @@ export default {
         <span class="nr" v-if="nr">{{ nr }}</span>
         <span
             class="value"
-            ref="value"
+            ref="valueRef"
             :contenteditable="isEditable"
             @input="setValue"
             @keydown="onKeyDown">{{ value }}</span>
