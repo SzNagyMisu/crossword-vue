@@ -1,7 +1,7 @@
 <script>
 export default {
     expose: ["currentStep"],
-    emits: ["nextStep", "finish"],
+    emits: ["nextStep"],
     props: {
         steps: {
             type: Array,
@@ -47,9 +47,6 @@ export default {
         nextStep() {
             this.$emit("nextStep");
         },
-        finish() {
-            this.$emit("finish");
-        },
     },
 }
 </script>
@@ -71,14 +68,6 @@ export default {
         class="success"
         value="Next"
         @click="nextStep"
-    >
-    <input
-        v-else
-        type="button"
-        :disabled="!isCurrentStepValid"
-        class="success"
-        value="Done"
-        @click="finish"
     >
 
     <h2>{{ currentStep.title }}</h2>
@@ -111,5 +100,12 @@ input[type=button].success:disabled {
     border-color: darkslategray;
     color: darkslategray;
     cursor: not-allowed;
+}
+
+
+@media print {
+    * {
+        display: none;
+    }
 }
 </style>

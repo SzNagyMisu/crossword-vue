@@ -9,6 +9,7 @@ import SolutionCells from './components/steps/SolutionCells.vue';
 import AddNumbers from './components/steps/AddNumbers.vue'
 import AddLetters from './components/steps/AddLetters.vue';
 import AddDefinitions from './components/steps/AddDefinitions.vue';
+import PrintPreview from './components/steps/PrintPreview.vue';
 
 const STEPS = [
     {
@@ -59,6 +60,14 @@ const STEPS = [
             return table.every(row => row.every(cell => !cell.nr || definitions.horizontal[cell.nr] || definitions.vertical[cell.nr]));
         },
     },
+    {
+        id: "print-preview",
+        title: "Print preview",
+        description: "Check how it looks like on paper and print eventually",
+        isValid() {
+            return true;
+        },
+    },
 ];
 
 export default {
@@ -72,7 +81,8 @@ export default {
         SolutionCells,
         AddNumbers,
         AddLetters,
-        AddDefinitions
+        AddDefinitions,
+        PrintPreview,
     },
     data() {
         return {
@@ -92,9 +102,6 @@ export default {
         },
         incrementStepIdx() {
             this.stepIdx++;
-        },
-        showPrintPreview() {
-            //TODO
         },
         importJSON(json) {
             const data = JSON.parse(json);
@@ -134,7 +141,6 @@ export default {
     <StepIndicator
       v-bind="{ steps, stepIdx, table, definitions }"
       @nextStep="incrementStepIdx"
-      @finish="showPrintPreview"
     />
 
     <SetSize             v-if="stepIdx === 0" :table="table" @setTable="setTable" />
@@ -143,4 +149,13 @@ export default {
     <AddNumbers     v-else-if="stepIdx === 3" :table="table" />
     <AddLetters     v-else-if="stepIdx === 4" :table="table" />
     <AddDefinitions v-else-if="stepIdx === 5" :table="table" :definitions="definitions" />
+    <PrintPreview   v-else-if="stepIdx === 6" :table="table" :definitions="definitions" />
 </template>
+
+<style scoped>
+@media print {
+    h1 {
+        display: none;
+    }
+}
+</style>

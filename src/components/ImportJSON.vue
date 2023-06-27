@@ -40,4 +40,11 @@ textarea {
     height: 250px;
     overflow-y: auto;
 }
+
+
+@media print {
+    * {
+        display: none;
+    }
+}
 </style>
