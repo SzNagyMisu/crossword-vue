@@ -3,6 +3,7 @@ import CrosswordTable from '../CrosswordTable.vue';
 import Definitions from '../Definitions.vue';
 
 export default {
+    emits: ["generateDefinitions"],
     components: {CrosswordTable, Definitions},
     props: {
         table: {
@@ -18,6 +19,9 @@ export default {
         return {}
     },
     methods: {
+        generateDefinitions() {
+            this.$emit("generateDefinitions");
+        },
         setTitle(dimension, value) {
             this.definitions[dimension].title = value;
         },
@@ -45,6 +49,7 @@ export default {
         :rows="table"
         :cellsEditable="false"
     />
+    <input type="button" value="Generate definitions" @click="generateDefinitions" />
     <Definitions
         :definitions="definitions"
         @setTitle="setTitle"

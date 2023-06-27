@@ -121,31 +121,31 @@ export default {
             this.table = data.table;
             this.definitions = data.definitions;
         },
-    },
-    mounted() {
-        this._mounted = true;
-    },
-    watch: {
-        stepIdx(newValue) {
-            if (this.steps[newValue].id === "add-definitions") {
-                this.table.forEach((row, rowIdx) => {
-                    row.forEach((cell, colIdx) => {
-                        const isHorizontalStart = colIdx === 0 || this.table[rowIdx][colIdx - 1].isBlack;
-                        const isVerticalStart = rowIdx === 0 || this.table[rowIdx - 1][colIdx].isBlack;
-                        if (cell.nr) {
-                            if (isHorizontalStart) this.definitions.horizontal.lines[cell.nr] = {
-                                value: "",
-                                isBold: false,
-                            };
-                            if (isVerticalStart) this.definitions.vertical.lines[cell.nr] = {
+        generateDefinitions() {
+            this.table.forEach((row, rowIdx) => {
+                row.forEach((cell, colIdx) => {
+                    const isHorizontalStart = colIdx === 0 || this.table[rowIdx][colIdx - 1].isBlack;
+                    const isVerticalStart = rowIdx === 0 || this.table[rowIdx - 1][colIdx].isBlack;
+                    if (cell.nr) {
+                        if (isHorizontalStart) {
+                            this.definitions.horizontal.lines[cell.nr] = {
                                 value: "",
                                 isBold: false,
                             };
                         }
-                    });
+                        if (isVerticalStart) {
+                            this.definitions.vertical.lines[cell.nr] = {
+                                value: "",
+                                isBold: false,
+                            };
+                        }
+                    }
                 });
-            }
+            });
         },
+    },
+    mounted() {
+        this._mounted = true;
     },
 };
 </script>
@@ -166,7 +166,7 @@ export default {
     <SolutionCells  v-else-if="stepIdx === 2" :table="table" />
     <AddNumbers     v-else-if="stepIdx === 3" :table="table" />
     <AddLetters     v-else-if="stepIdx === 4" :table="table" />
-    <AddDefinitions v-else-if="stepIdx === 5" :table="table" :definitions="definitions" />
+    <AddDefinitions v-else-if="stepIdx === 5" :table="table" :definitions="definitions" @generateDefinitions="generateDefinitions" />
     <PrintPreview   v-else-if="stepIdx === 6" :table="table" :definitions="definitions" />
 </template>
 
