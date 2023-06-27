@@ -1,6 +1,6 @@
 <script>
 export default {
-    emits: ["setDefinition", "removeDefinition"],
+    emits: ["setTitle", "createDefinition", "setDefinition", "toggleBoldness", "removeDefinition"],
     props: {
         definitions: {
             type: Object,
@@ -22,8 +22,14 @@ export default {
         };
     },
     methods: {
+        setTitle(dimension, value) {
+            this.$emit("setTitle", dimension, value);
+        },
         setDefinition(dimension, nr, value) {
             this.$emit("setDefinition", dimension, nr, value);
+        },
+        toggleBoldness(dimension, nr) {
+            this.$emit("toggleBoldness", dimension, nr);
         },
         removeDefinition(dimension, nr) {
             this.$emit("removeDefinition", dimension, nr);
@@ -34,7 +40,7 @@ export default {
         createDefinition(dimension) {
             if (this.newDefinitions[dimension].nr == null) return;
 
-            this.setDefinition(dimension, this.newDefinitions[dimension].nr, "");
+            this.$emit("createDefinition", dimension, this.newDefinitions[dimension].nr);
             this.closeNewDefinition(dimension);
         },
         closeNewDefinition(dimension) {
@@ -49,7 +55,12 @@ export default {
 
 <template>
     <section v-for="dimension in Object.keys(definitions)" :key="dimension">
-        <h3>{{ dimension }}</h3>
+        <input
+            type="text"
+            class="dimension-title"
+            :value="definitions[dimension].title"
+            @input="$event => setTitle(dimension, $event.target.value)"
+        />
         <input type="button" value="+" @click="newDefinition(dimension)" />
         <ul>
             <li v-if="newDefinitions[dimension].show">
@@ -57,25 +68,27 @@ export default {
                 <input type="button" value="Add" @click="createDefinition(dimension)" />
                 <input type="button" value="Cancel" @click="closeNewDefinition(dimension)" />
             </li>
-            <li v-for="(definition, nr) in definitions[dimension]" :key="nr">
+            <li v-for="(definition, nr) in definitions[dimension].lines" :key="nr">
                 {{ nr }}.
                 <input
                     type="text"
-                    class="definition"
-                    :value="definition"
+                    :class="{definition: true, bold: definition.isBold}"
+                    :value="definition.value"
                     @input="$event => setDefinition(dimension, nr, $event.target.value)"
                 >
-                <input type="button" value="×" @click="() => removeDefinition(dimension, nr)">
+                <input
+                    type="button"
+                    :class="{boldToggle: true, active: definition.isBold}"
+                    value="B"
+                    @click="() => toggleBoldness(dimension, nr)"
+                />
+                <input type="button" value="×" @click="() => removeDefinition(dimension, nr)" />
             </li>
         </ul>
     </section>
 </template>
 
 <style scoped>
-h3::first-letter {
-    text-transform: capitalize;
-}
-
 ul {
     list-style: none;
 }
@@ -88,6 +101,14 @@ input[type=text], input[type=number] {
     height: 18px;
 }
 
+input[type=text].dimension-title {
+    font-size: 1.2em;
+    height: 1.2em;
+    line-height: 1.2em;
+    padding: 5px 10px;
+    display: block;
+}
+
 input[type=number].new-definition {
     width: 30px;
 }
@@ -97,7 +118,20 @@ input[type=text].definition {
     height: 18px;
 }
 
+input[type=text].definition.bold {
+    font-weight: bold;
+}
+
 input[type=button] {
     padding: 4px 8px;
+}
+
+input[type=button].boldToggle {
+    font-weight: bold;
+}
+
+input[type=button].boldToggle.active {
+    background-color: black;
+    color: grey;
 }
 </style>

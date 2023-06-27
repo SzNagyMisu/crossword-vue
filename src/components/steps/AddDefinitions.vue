@@ -18,11 +18,23 @@ export default {
         return {}
     },
     methods: {
+        setTitle(dimension, value) {
+            this.definitions[dimension].title = value;
+        },
+        createDefinition(dimension, nr) {
+            this.definitions[dimension].lines[nr] = {
+                value: "",
+                isBold: false,
+            };
+        },
         setDefinition(dimension, nr, value) {
-            this.definitions[dimension][nr] = value;
+            this.definitions[dimension].lines[nr].value = value;
+        },
+        toggleBoldness(dimension, nr) {
+            this.definitions[dimension].lines[nr].isBold = !this.definitions[dimension].lines[nr].isBold
         },
         removeDefinition(dimension, nr) {
-            delete this.definitions[dimension][nr];
+            delete this.definitions[dimension].lines[nr];
         },
     },
 }
@@ -35,7 +47,10 @@ export default {
     />
     <Definitions
         :definitions="definitions"
+        @setTitle="setTitle"
+        @createDefinition="createDefinition"
         @setDefinition="setDefinition"
         @removeDefinition="removeDefinition"
+        @toggleBoldness="toggleBoldness"
     />
 </template>

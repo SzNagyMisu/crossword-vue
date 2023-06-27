@@ -27,11 +27,11 @@ const print = () => window.print();
     />
 
     <section v-for="dimension in Object.keys(definitions)" :key="dimension">
-        <h3>{{ dimension }}</h3>
+        <h3>{{ definitions[dimension].title }}</h3>
         <ul>
-            <li v-for="(definition, nr) in definitions[dimension]" :key="nr">
+            <li v-for="(definition, nr) in definitions[dimension].lines" :key="nr">
                 <strong>{{ nr }}</strong>.
-                {{ definition }}
+                <span :class="{bold: definition.isBold}">{{ definition.value }}</span>
             </li>
         </ul>
     </section>
@@ -40,10 +40,6 @@ const print = () => window.print();
 </template>
 
 <style scoped>
-h3::first-letter {
-    text-transform: capitalize;
-}
-
 input.crossword-title {
     margin-bottom: 24px;
     height: 1.5em;
@@ -51,6 +47,10 @@ input.crossword-title {
     font-size: 1.5em;
     font-weight: bold;
     padding: 5px 10px;
+}
+
+span.bold {
+    font-weight: bold;
 }
 
 

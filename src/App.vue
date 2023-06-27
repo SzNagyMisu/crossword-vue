@@ -57,7 +57,13 @@ const STEPS = [
         title: "Add definitions",
         description: "Add definitions to the numbers",
         isValid({ table, definitions }) {
-            return table.every(row => row.every(cell => !cell.nr || definitions.horizontal[cell.nr] || definitions.vertical[cell.nr]));
+            return table.every(row => (
+                row.every(cell => (
+                    !cell.nr
+                        || definitions.horizontal.lines[cell.nr] && definitions.horizontal.lines[cell.nr].value
+                        || definitions.vertical.lines[cell.nr] && definitions.vertical.lines[cell.nr].value
+                ))
+            ));
         },
     },
     {
@@ -91,8 +97,14 @@ export default {
             stepIdx: 0,
             table: [],
             definitions: {
-                horizontal: {},
-                vertical: {},
+                horizontal: {
+                    title: "Horizontal",
+                    lines: {},
+                },
+                vertical: {
+                    title:  "Vertical",
+                    lines: {},
+                },
             },
         }
     },
@@ -114,15 +126,21 @@ export default {
         this._mounted = true;
     },
     watch: {
-        stepIdx(_newValue, oldValue) {
-            if (this.steps[oldValue].id === "add-cell-numbers") {
+        stepIdx(newValue) {
+            if (this.steps[newValue].id === "add-definitions") {
                 this.table.forEach((row, rowIdx) => {
                     row.forEach((cell, colIdx) => {
                         const isHorizontalStart = colIdx === 0 || this.table[rowIdx][colIdx - 1].isBlack;
                         const isVerticalStart = rowIdx === 0 || this.table[rowIdx - 1][colIdx].isBlack;
                         if (cell.nr) {
-                            if (isHorizontalStart) this.definitions.horizontal[cell.nr] = "";
-                            if (isVerticalStart) this.definitions.vertical[cell.nr] = "";
+                            if (isHorizontalStart) this.definitions.horizontal.lines[cell.nr] = {
+                                value: "",
+                                isBold: false,
+                            };
+                            if (isVerticalStart) this.definitions.vertical.lines[cell.nr] = {
+                                value: "",
+                                isBold: false,
+                            };
                         }
                     });
                 });
