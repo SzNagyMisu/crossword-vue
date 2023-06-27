@@ -9,7 +9,7 @@
 3. copy everything in the `/dist/` folder to the `deploy` branch root folder
 4. remove old CSS and JS files (`/assets/index-{hash}.{js/css}`)
 5. checkout changes in the `index.html` file that would add a leading `/` for the assets and the favicon (this is importtant because the page is under the path `/crossword-vue/` and setting `/anything` as path would check outside)
-```
+```html
 <link rel="icon" href="favicon.ico">
                        ^ (not "/favicon.ico")
 <script type="module" crossorigin src="assets/index-e14ee8af.js"></script>
