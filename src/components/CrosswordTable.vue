@@ -9,8 +9,12 @@ export default {
             required: true,
         },
         cellsEditable: {
-            required: true,
             type: Boolean,
+            required: true,
+        },
+        isPrintPreview: {
+            type: Boolean,
+            default: false,
         },
     },
     emits: ["cellClicked"],
@@ -45,7 +49,7 @@ export default {
 </script>
 
 <template>
-    <section class="table">
+    <section :class="{table: true, printPreview: isPrintPreview}">
         <section class="row" v-for="(row, rowIdx) in rows" :key="rowIdx">
             <Cell
                 v-for="(cell, colIdx) in row"
@@ -64,6 +68,12 @@ export default {
 </template>
 
 <style scoped>
+section.table.printPreview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 section.row {
     display: flex
 }

@@ -24,14 +24,14 @@ const print = () => window.print();
     <CrosswordTable
         :rows="table"
         :cellsEditable="false"
+        :isPrintPreview="true"
     />
 
     <section v-for="dimension in Object.keys(definitions)" :key="dimension">
         <h3>{{ definitions[dimension].title }}</h3>
         <ul>
             <li v-for="(definition, nr) in definitions[dimension].lines" :key="nr">
-                <strong>{{ nr }}</strong>.
-                <span :class="{bold: definition.isBold}">{{ definition.value }}</span>
+                <strong>{{ nr }}</strong>.&nbsp;<span :class="{bold: definition.isBold}">{{ definition.value }}</span>
             </li>
         </ul>
     </section>
@@ -41,12 +41,32 @@ const print = () => window.print();
 
 <style scoped>
 input.crossword-title {
-    margin-bottom: 24px;
+    margin-bottom: 12px;
     height: 1.5em;
     line-height: 1.5em;
     font-size: 1.5em;
     font-weight: bold;
     padding: 5px 10px;
+    width: 100%;
+    text-align: center;
+}
+
+h3 {
+    margin-bottom: 0;
+}
+
+ul {
+    margin-top: 0;
+    padding-inline-start: 0;
+}
+
+li {
+    display: inline;
+    margin-right: 3px;
+    font-size: 14px;
+}
+li::after {
+    content: " ";
 }
 
 span.bold {

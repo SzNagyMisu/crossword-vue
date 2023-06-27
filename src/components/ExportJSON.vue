@@ -13,11 +13,11 @@ export default {
     },
     computed: {
         jsonObject() {
-            return {
+            return JSON.stringify({
                 stepIdx: this.stepIdx,
                 table: this.table,
                 definitions: this.definitions,
-            };
+            });
         },
         copyJSON() {
             const jsonContainer = this.$refs.JSONContainer;
