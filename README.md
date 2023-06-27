@@ -1,29 +1,20 @@
-# crossword
+# Crossword - deploy branch
 
-This template should help get you started developing with Vue 3 in Vite.
+> This branch is auto deployed to https://sznagymisu.github.io/crossword-vue/
 
-## Recommended IDE Setup
+## Steps to deploy
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
+1. make changes on the `main` branch, commit and push them
+2. build the package, still on the `main` branch (`npm rum build`)
+3. copy everything in the `/dist/` folder to the `deploy` branch root folder
+4. remove old CSS and JS files (`/assets/index-{hash}.{js/css}`)
+5. checkout changes in the `index.html` file that would add a leading `/` for the assets and the favicon (this is importtant because the page is under the path `/crossword-vue/` and setting `/anything` as path would check outside)
 ```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
+<link rel="icon" href="favicon.ico">
+                       ^ (not "/favicon.ico")
+<script type="module" crossorigin src="assets/index-e14ee8af.js"></script>
+                                       ^ (not "/assets/...")
+<link rel="stylesheet" href="assets/index-6a37ff9c.css">
+                             ^ (not "/assest/...")
 ```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
+6. commit and push to `deploy` - it'll automatically push out the changes to the webpage
