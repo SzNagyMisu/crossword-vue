@@ -70,10 +70,14 @@ article {
 
 article.black {
     background: black;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
 }
 
 article.solution {
     background-color: cornsilk;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
 }
 
 span.nr {
@@ -89,5 +93,12 @@ span.value {
     justify-content: center;
     align-items: center;
     font-size: 16px;
+}
+
+
+@media print {
+    span.value {
+        display: none;
+    }
 }
 </style>
