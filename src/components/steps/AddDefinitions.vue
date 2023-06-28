@@ -1,5 +1,5 @@
 <script>
-import { findHorizontalWord, findVerticalWord } from '../../utils.js';
+import { findHorizontalWordByNr, findVerticalWordByNr } from '../../utils.js';
 import CrosswordTable from '../CrosswordTable.vue';
 import Definitions from '../Definitions.vue';
 
@@ -23,10 +23,10 @@ export default {
         definitionWords() {
             const horizontal = {};
             Object.keys(this.definitions.horizontal.lines)
-                .forEach(nr => horizontal[nr] = findHorizontalWord(nr, this.table));
+                .forEach(nr => horizontal[nr] = findHorizontalWordByNr(nr, this.table));
             const vertical = {};
             Object.keys(this.definitions.vertical.lines)
-                .forEach(nr => vertical[nr] = findVerticalWord(nr, this.table));
+                .forEach(nr => vertical[nr] = findVerticalWordByNr(nr, this.table));
 
             return { horizontal, vertical };
         },
