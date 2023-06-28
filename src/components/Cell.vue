@@ -8,6 +8,7 @@ const props = defineProps({
     isSolution: Boolean,
     value: [String, null],
     nr: [Number, null],
+    turn: String,
     isEditable: Boolean,
 });
 const emit = defineEmits(["input", "navigate"]);
@@ -49,7 +50,8 @@ defineExpose({
 <template>
     <article v-if="isBlack" class="black" />
     <article v-else :class="{ solution: isSolution }">
-        <span class="nr" v-if="nr">{{ nr }}</span>
+        <span v-if="nr" class="nr">{{ nr }}</span>
+        <span v-if="turn" :class="['turn', turn]"></span>
         <span
             class="value"
             ref="valueRef"
@@ -83,7 +85,26 @@ article.solution {
 span.nr {
     font-size: 9px;
     padding: 1px;
-    position: absolute
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin-bottom: calc(-100% - 2px);
+}
+
+span.turn:after {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    margin-bottom: -100%;
+    font-size: 12px;
+}
+span.turn.down:after {
+    content: "\2935";
+    justify-content: end;
+}
+span.turn.right:after {
+    content: "\2937";
+    align-items: end;
 }
 
 span.value {
