@@ -1,4 +1,5 @@
 <script>
+import { findHorizontalWord, findVerticalWord } from '../../utils.js';
 import CrosswordTable from '../CrosswordTable.vue';
 import Definitions from '../Definitions.vue';
 
@@ -16,7 +17,19 @@ export default {
         },
     },
     data () {
-        return {}
+        return {};
+    },
+    computed: {
+        definitionWords() {
+            const horizontal = {};
+            Object.keys(this.definitions.horizontal.lines)
+                .forEach(nr => horizontal[nr] = findHorizontalWord(nr, this.table));
+            const vertical = {};
+            Object.keys(this.definitions.vertical.lines)
+                .forEach(nr => vertical[nr] = findVerticalWord(nr, this.table));
+
+            return { horizontal, vertical };
+        },
     },
     methods: {
         generateDefinitions() {
@@ -47,11 +60,12 @@ export default {
 <template>
     <CrosswordTable
         :rows="table"
-        :cellsEditable="false"
+        :cellsEditable="true"
     />
-    <input type="button" value="Generate definitions" @click="generateDefinitions" />
+    <input type="button" value="Generate empty definitions" @click="generateDefinitions" />
     <Definitions
         :definitions="definitions"
+        :definitionWords="definitionWords"
         @setTitle="setTitle"
         @createDefinition="createDefinition"
         @setDefinition="setDefinition"
@@ -59,3 +73,9 @@ export default {
         @toggleBoldness="toggleBoldness"
     />
 </template>
+
+<style scoped>
+input[type=button] {
+    margin: 24px 0 12px 0;
+}
+</style>

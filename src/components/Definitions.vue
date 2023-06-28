@@ -6,6 +6,10 @@ export default {
             type: Object,
             required: true,
         },
+        definitionWords: {
+            type: Object,
+            required: true,
+        },
     },
     data () {
         return {
@@ -70,6 +74,7 @@ export default {
             </li>
             <li v-for="(definition, nr) in definitions[dimension].lines" :key="nr">
                 {{ nr }}.
+                (<span class="definition-word">{{ this.definitionWords[dimension][nr] }}</span>)
                 <input
                     type="text"
                     :class="{definition: true, bold: definition.isBold}"
@@ -95,6 +100,11 @@ ul {
 
 li {
     margin-bottom: 8px;
+}
+
+span.definition-word {
+    font-size: 12px;
+    letter-spacing: 1.5px;
 }
 
 input[type=text], input[type=number] {
