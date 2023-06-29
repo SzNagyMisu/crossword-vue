@@ -38,8 +38,8 @@ const STEPS = [
     },
     {
         id: "add-cell-numbers",
-        title: "Add cell numbers",
-        description: "Click the cells to add number to them",
+        title: "Add cell numbers and turns",
+        description: "Click the cells to add or remove number or turn",
         isValid() {
             return true;
         },
