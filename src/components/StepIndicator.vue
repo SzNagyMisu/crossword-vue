@@ -1,7 +1,7 @@
 <script>
 export default {
     expose: ["currentStep"],
-    emits: ["nextStep"],
+    emits: ["setStepIdx"],
     props: {
         steps: {
             type: Array,
@@ -36,16 +36,19 @@ export default {
     },
     methods: {
         stepState(stepNr) {
-            if (stepNr < this.stepIdx) {
-                return "done";
-            } else if (stepNr === this.stepIdx) {
+            if (stepNr === this.stepIdx) {
                 return "active";
+            } else if (stepNr < this.stepIdx) {
+                return "done";
             } else {
                 return "pending"
             }
         },
         nextStep() {
-            this.$emit("nextStep");
+            this.$emit("setStepIdx", this.stepIdx + 1);
+        },
+        previousStep() {
+            this.$emit("setStepIdx", this.stepIdx - 1);
         },
     },
 }
@@ -61,6 +64,12 @@ export default {
         >{{ step.title }}</li>
     </ul>
 
+    <input
+        v-if="stepIdx > 0"
+        type="button"
+        value="Back"
+        @click="previousStep"
+    />
     <input
         v-if="stepIdx < steps.length - 1"
         type="button"
@@ -81,6 +90,7 @@ li.done {
 
 li.active {
     color: blue;
+    font-weight: bold;
 }
 
 li.pending {

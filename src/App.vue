@@ -112,8 +112,8 @@ export default {
         setTable(table) {
             this.table = table;
         },
-        incrementStepIdx() {
-            this.stepIdx++;
+        setStepIdx(stepIdx) {
+            this.stepIdx = stepIdx;
         },
         importJSON(json) {
             const data = JSON.parse(json);
@@ -158,7 +158,7 @@ export default {
 
     <StepIndicator
       v-bind="{ steps, stepIdx, table, definitions }"
-      @nextStep="incrementStepIdx"
+      @setStepIdx="setStepIdx"
     />
 
     <SetSize             v-if="stepIdx === 0" :table="table" @setTable="setTable" />
