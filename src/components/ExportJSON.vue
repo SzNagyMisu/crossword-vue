@@ -19,6 +19,8 @@ export default {
                 definitions: this.definitions,
             });
         },
+    },
+    methods: {
         copyJSON() {
             const jsonContainer = this.$refs.JSONContainer;
             jsonContainer.select();
