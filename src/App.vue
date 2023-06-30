@@ -95,6 +95,7 @@ export default {
             _mounted: false,
             steps: STEPS,
             stepIdx: 0,
+            maxStepReached: 0,
             table: [],
             definitions: {
                 horizontal: {
@@ -114,6 +115,7 @@ export default {
         },
         setStepIdx(stepIdx) {
             this.stepIdx = stepIdx;
+            if (stepIdx > this.maxStepReached) this.maxStepReached = stepIdx;
         },
         importJSON(json) {
             const data = JSON.parse(json);
@@ -157,7 +159,7 @@ export default {
     <ExportJSON v-bind="{ stepIdx, table, definitions }" />
 
     <StepIndicator
-      v-bind="{ steps, stepIdx, table, definitions }"
+      v-bind="{ steps, stepIdx, maxStepReached, table, definitions }"
       @setStepIdx="setStepIdx"
     />
 

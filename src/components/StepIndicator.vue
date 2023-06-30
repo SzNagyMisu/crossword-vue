@@ -11,6 +11,10 @@ export default {
             type: Number,
             required: true,
         },
+        maxStepReached: {
+            type: Number,
+            required: true,
+        },
         table: {
             type: Array,
             required: true,
@@ -35,20 +39,14 @@ export default {
         },
     },
     methods: {
-        stepState(stepNr) {
-            if (stepNr === this.stepIdx) {
-                return "active";
-            } else if (stepNr < this.stepIdx) {
-                return "done";
-            } else {
-                return "pending"
-            }
+        setStep(idx) {
+            this.$emit("setStepIdx", idx);
         },
         nextStep() {
-            this.$emit("setStepIdx", this.stepIdx + 1);
+            this.setStep(this.stepIdx + 1);
         },
         previousStep() {
-            this.$emit("setStepIdx", this.stepIdx - 1);
+            this.setStep(this.stepIdx - 1);
         },
     },
 }
@@ -56,13 +54,17 @@ export default {
 
 <template>
     <h2>Steps</h2>
-    <ul>
-        <li
-            v-for="(step, nr) in steps"
-            :key="nr"
-            :class="stepState(nr)"
-        >{{ step.title }}</li>
-    </ul>
+
+    <nav>
+        <ul>
+            <li
+                v-for="(step, idx) in steps"
+                :key="idx"
+                :class="{active: stepIdx === idx, disabled: maxStepReached < idx}"
+                @click="() => setStep(idx)"
+            >{{ step.title }}</li>
+        </ul>
+    </nav>
 
     <input
         v-if="stepIdx > 0"
@@ -84,23 +86,39 @@ export default {
 </template>
 
 <style scoped>
-li.done {
-    color: green;
+nav ul {
+    padding-inline-start: 0;
 }
 
-li.active {
-    color: blue;
-    font-weight: bold;
+nav li {
+    list-style: none;
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: green;
+    border: 1px solid darkslategray;
+    color: white;
+    cursor: pointer;
+    margin-left: -1px;
 }
-
-li.pending {
-    color: grey;
-    list-style-type: circle;
+nav li.active {
+    text-decoration: underline;
+}
+nav li.disabled {
+    background-color: white;
+    color: darkslategray;
+    cursor: not-allowed;
+}
+nav li:first-child {
+    border-radius: 5px 0 0 5px;
+    margin-left: 0;
+}
+nav li:last-child {
+    border-radius: 0 5px 5px 0;
 }
 
 input[type=button].success {
     background-color: green;
-    border: 1px greenyellow solid;
+    border: 1px green solid;
     color: white;
     cursor: pointer;
 }
