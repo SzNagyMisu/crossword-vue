@@ -16,7 +16,7 @@ export default {
     },
     methods: {
         toggleTurn(cellClicked) {
-            cellClicked.turn = cellClicked.turn ? undefined : this.turnDirection;
+            cellClicked.turn = cellClicked.turn === this.turnDirection ? undefined : this.turnDirection;
         },
         autoAddTurns() {
             this.table.forEach((row, rowIdx) => {
