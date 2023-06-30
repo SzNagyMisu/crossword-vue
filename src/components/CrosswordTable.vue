@@ -19,8 +19,8 @@ export default {
     },
     emits: ["cellClicked"],
     methods: {
-        onCellClicked(cell) {
-            this.$emit("cellClicked", cell);
+        onCellClicked(cell, rowIdx, colIdx) {
+            this.$emit("cellClicked", cell, rowIdx, colIdx);
         },
         setCellValue(cell, value) {
             cell.value = value;
@@ -59,7 +59,7 @@ export default {
                 :row="rowIdx"
                 :col="colIdx"
                 v-bind="cell"
-                @click="() => onCellClicked(cell)"
+                @click="() => onCellClicked(cell, rowIdx, colIdx)"
                 @input="value => setCellValue(cell, value)"
                 @navigate="direction => navigate(rowIdx, colIdx, direction)"
             />

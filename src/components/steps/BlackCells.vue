@@ -13,8 +13,8 @@ export default {
         return {};
     },
     methods: {
-        onCellClicked(cell) {
-            cell.isBlack = !cell.isBlack;
+        onCellClicked(cell, rowIdx, colIdx) {
+            this.table[rowIdx][colIdx] = cell.isBlack ? {} : { isBlack: true };
         },
     },
 }
