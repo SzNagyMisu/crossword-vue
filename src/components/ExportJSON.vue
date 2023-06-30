@@ -2,6 +2,7 @@
 export default {
     props: {
         stepIdx: Number,
+        maxStepReached: Number,
         table: Array,
         definitions: Object,
     },
@@ -15,6 +16,7 @@ export default {
         jsonObject() {
             return JSON.stringify({
                 stepIdx: this.stepIdx,
+                maxStepReached: this.maxStepReached,
                 table: this.table,
                 definitions: this.definitions,
             });

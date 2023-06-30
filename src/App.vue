@@ -135,6 +135,7 @@ export default {
         importJSON(json) {
             const data = JSON.parse(json);
             this.stepIdx = data.stepIdx;
+            this.maxStepReached = "maxStepReached" in data ? data.maxStepReached : data.stepIdx;
             this.table = data.table;
             this.definitions = data.definitions;
         },
