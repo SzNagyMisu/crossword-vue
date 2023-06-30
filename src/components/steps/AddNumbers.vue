@@ -15,36 +15,17 @@ export default {
         };
     },
     methods: {
-        autoAddNumbersAndTurns() {
+        autoAddNumbers() {
             let currentNr = 1;
             this.table.forEach((row, rowIdx) => {
                 row.forEach((cell, colIdx) => {
                     if (cell.isBlack) return;
 
-                    const cellLeft = this.table[rowIdx][colIdx - 1];
-                    const cellTop = this.table[rowIdx - 1] && this.table[rowIdx - 1][colIdx];
-                    const cellRight = this.table[rowIdx][colIdx + 1];
-                    const cellBottom = this.table[rowIdx + 1] && this.table[rowIdx + 1][colIdx];
-
-                    const isHorizontalStart = colIdx === 0 || cellLeft.isBlack;
-                    const isVerticalStart = rowIdx === 0 || cellTop.isBlack;
+                    const isHorizontalStart = colIdx === 0 || this.table[rowIdx][colIdx - 1].isBlack;
+                    const isVerticalStart = rowIdx === 0 || this.table[rowIdx - 1][colIdx].isBlack;
                     if (isHorizontalStart || isVerticalStart) {
                         cell.nr = currentNr;
                         currentNr++;
-                    }
-
-                    if (cell.isSolution) {
-                        if (
-                            cellLeft && cellLeft.isSolution &&
-                            cellBottom && cellBottom.isSolution
-                        ) {
-                            cell.turn = "down";
-                        } else if (
-                            cellTop && cellTop.isSolution &&
-                            cellRight && cellRight.isSolution
-                        ) {
-                            cell.turn = "right";
-                        }
                     }
                 });
             });
@@ -90,12 +71,7 @@ export default {
 </script>
 
 <template>
-    What to add:
-    <label><input type="radio" value="number" v-model="addType" /> number</label>
-    <label><input type="radio" value="turn-down" v-model="addType" /> turn down</label>
-    <label><input type="radio" value="turn-right" v-model="addType" /> turn right</label>
-
-    <input type="button" value="Auto add numbers and turns" @click="autoAddNumbersAndTurns">
+    <input type="button" value="Auto add numbers" @click="autoAddNumbers">
     <CrosswordTable
         :rows="table"
         :cellsEditable="false"

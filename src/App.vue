@@ -7,6 +7,7 @@ import SetSize from './components/steps/SetSize.vue';
 import BlackCells from './components/steps/BlackCells.vue';
 import SolutionCells from './components/steps/SolutionCells.vue';
 import AddNumbers from './components/steps/AddNumbers.vue'
+import AddTurns from './components/steps/AddTurns.vue';
 import AddLetters from './components/steps/AddLetters.vue';
 import AddDefinitions from './components/steps/AddDefinitions.vue';
 import PrintPreview from './components/steps/PrintPreview.vue';
@@ -37,9 +38,17 @@ const STEPS = [
         },
     },
     {
-        id: "add-cell-numbers",
-        title: "Add cell numbers and turns",
-        description: "Click the cells to add or remove number or turn",
+        id: "add-numbers",
+        title: "Add numbers",
+        description: "Click the cells to add or remove number",
+        isValid() {
+            return true;
+        },
+    },
+    {
+        id: "add-turns",
+        title: "Add turns",
+        description: "Click the cells to add or remove turns",
         isValid() {
             return true;
         },
@@ -86,6 +95,7 @@ export default {
         BlackCells,
         SolutionCells,
         AddNumbers,
+        AddTurns,
         AddLetters,
         AddDefinitions,
         PrintPreview,
@@ -107,7 +117,12 @@ export default {
                     lines: {},
                 },
             },
-        }
+        };
+    },
+    computed: {
+        currentStepId() {
+            return this.steps[this.stepIdx].id;
+        },
     },
     methods: {
         setTable(table) {
@@ -163,13 +178,14 @@ export default {
       @setStepIdx="setStepIdx"
     />
 
-    <SetSize             v-if="stepIdx === 0" :table="table" @setTable="setTable" />
-    <BlackCells     v-else-if="stepIdx === 1" :table="table" />
-    <SolutionCells  v-else-if="stepIdx === 2" :table="table" />
-    <AddNumbers     v-else-if="stepIdx === 3" :table="table" />
-    <AddLetters     v-else-if="stepIdx === 4" :table="table" />
-    <AddDefinitions v-else-if="stepIdx === 5" :table="table" :definitions="definitions" @generateDefinitions="generateDefinitions" />
-    <PrintPreview   v-else-if="stepIdx === 6" :table="table" :definitions="definitions" />
+    <SetSize             v-if="currentStepId === 'define-size'" :table="table" @setTable="setTable" />
+    <BlackCells     v-else-if="currentStepId === 'define-black-cells'" :table="table" />
+    <SolutionCells  v-else-if="currentStepId === 'define-solution-cells'" :table="table" />
+    <AddNumbers     v-else-if="currentStepId === 'add-numbers'" :table="table" />
+    <AddTurns       v-else-if="currentStepId === 'add-turns'" :table="table" />
+    <AddLetters     v-else-if="currentStepId === 'add-letters'" :table="table" />
+    <AddDefinitions v-else-if="currentStepId === 'add-definitions'" :table="table" :definitions="definitions" @generateDefinitions="generateDefinitions" />
+    <PrintPreview   v-else-if="currentStepId === 'print-preview'" :table="table" :definitions="definitions" />
 </template>
 
 <style scoped>
