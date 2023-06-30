@@ -33,10 +33,11 @@ export default {
         },
         setTable(rows, columns) {
             const table = [];
-            for (let row = 0; row < rows; row++) {
+            for (let rowIdx = 0; rowIdx < rows; rowIdx++) {
                 const row = [];
-                for (let col = 0; col < columns; col++) {
-                    row.push({});
+                for (let colIdx = 0; colIdx < columns; colIdx++) {
+                    const originalValue = this.table[rowIdx] && this.table[rowIdx][colIdx];
+                    row.push(originalValue || {});
                 }
                 table.push(row);
             }
