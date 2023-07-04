@@ -21,14 +21,14 @@ export default {
 </script>
 
 <template>
-    <input v-if="!showForm" type="button" value="Import JSON" @click="showForm = true">
+    <input v-if="!showForm" type="button" :value="i18n.t`Import JSON`" @click="showForm = true">
     <form v-else @submit.prevent="importJSON" @reset="onFormReset">
         <fieldset>
             <textarea v-model="json" />
         </fieldset>
         <fieldset>
-            <input type="submit" value="Import">
-            <input type="reset" value="Cancel">
+            <input type="submit" :value="i18n.t`Import`">
+            <input type="reset" :value="i18n.t`Cancel`">
         </fieldset>
     </form>
 </template>

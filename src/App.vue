@@ -15,56 +15,56 @@ import PrintPreview from './components/steps/PrintPreview.vue';
 const STEPS = [
     {
         id: "define-size",
-        title: "Define size",
-        description: "Set the number of rows and columns",
+        title: this.i18n.t`Define size`,
+        description: this.i18n.t`Set the number of rows and columns`,
         isValid({ table }) {
             return table.length && table[0].length;
         },
     },
     {
         id: "define-black-cells",
-        title: "Define black cells",
-        description: "Click the cells to make them black - click again to revert",
+        title: this.i18n.t`Define black cells`,
+        description: this.i18n.t`Click the cells to make them black - click again to revert`,
         isValid() {
             return true;
         },
     },
     {
         id: "define-solution-cells",
-        title: "Define solution cells",
-        description: "Click the cells to make them highlighted as the solution line",
+        title: this.i18n.t`Define solution cells`,
+        description: this.i18n.t`Click the cells to make them highlighted as the solution line`,
         isValid() {
             return true;
         },
     },
     {
         id: "add-numbers",
-        title: "Add numbers",
-        description: "Click the cells to add or remove number",
+        title: this.i18n.t`Add numbers`,
+        description: this.i18n.t`Click the cells to add or remove number`,
         isValid() {
             return true;
         },
     },
     {
         id: "add-turns",
-        title: "Add turns",
-        description: "Click the cells to add or remove turns",
+        title: this.i18n.t`Add turns`,
+        description: this.i18n.t`Click the cells to add or remove turns`,
         isValid() {
             return true;
         },
     },
     {
         id: "add-letters",
-        title: "Add letters",
-        description: "Add letters to the cells that are not black",
+        title: this.i18n.t`Add letters`,
+        description: this.i18n.t`Add letters to the cells that are not black`,
         isValid({ table }) {
             return table.every(row => row.every(cell => cell.isBlack || cell.value != null));
         },
     },
     {
         id: "add-definitions",
-        title: "Add definitions",
-        description: "Add definitions to the numbers",
+        title: this.i18n.t`Add definitions`,
+        description: this.i18n.t`Add definitions to the numbers`,
         isValid({ table, definitions }) {
             return table.every(row => (
                 row.every(cell => (
@@ -77,8 +77,8 @@ const STEPS = [
     },
     {
         id: "print-preview",
-        title: "Print preview",
-        description: "Check how it looks like on paper and print eventually",
+        title: this.i18n.t`Print preview`,
+        description: this.i18n.t`Check how it looks like on paper and print eventually`,
         isValid() {
             return true;
         },

@@ -9,7 +9,7 @@ export default {
     data() {
         return {
             showJSON: false,
-            copyButtonText: "Copy",
+            copyButtonText: i18n.t`Copy`,
         };
     },
     computed: {
@@ -28,19 +28,19 @@ export default {
             jsonContainer.select();
             navigator.clipboard.writeText(jsonContainer.value);
             jsonContainer.blur();
-            this.copyButtonText = "Copied!";
-            setTimeout(() => this.copyButtonText = "Copy", 5000);
+            this.copyButtonText = i18n.t`Copied!`;
+            setTimeout(() => this.copyButtonText = i18n.t`Copy`, 5000);
         },
     },
 }
 </script>
 
 <template>
-    <input v-if="!showJSON" type="button" value="Export JSON" @click="showJSON = true">
+    <input v-if="!showJSON" type="button" :value="i18n.t`Export JSON`" @click="showJSON = true">
     <section v-else>
         <textarea ref="JSONContainer">{{ jsonObject }}</textarea>
         <input type="button" :value="copyButtonText" @click="copyJSON">
-        <input type="button" value="Done" @click="showJSON = false">
+        <input type="button" :value="i18n.t`Done`" @click="showJSON = false">
     </section>
 </template>
 

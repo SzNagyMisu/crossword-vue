@@ -47,10 +47,10 @@ export default {
 </script>
 
 <template>
-    <label><input type="radio" value="down" v-model="turnDirection" /> turn down</label>
-    <label><input type="radio" value="right" v-model="turnDirection" /> turn right</label>
+    <label><input type="radio" value="down" v-model="turnDirection" /> {{ i18n.t`turn down` }}</label>
+    <label><input type="radio" value="right" v-model="turnDirection" /> {{ i18n.t`turn right` }}</label>
 
-    <input type="button" value="Auto add turns" @click="autoAddTurns">
+    <input type="button" :value="i18n.t`Auto add turns`" @click="autoAddTurns">
 
     <CrosswordTable
         :rows="table"

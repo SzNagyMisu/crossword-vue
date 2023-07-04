@@ -62,7 +62,7 @@ export default {
         :rows="table"
         :cellsEditable="true"
     />
-    <input type="button" value="Generate empty definitions" @click="generateDefinitions" />
+    <input type="button" :value="i18n.t`Generate empty definitions`" @click="generateDefinitions" />
     <Definitions
         :definitions="definitions"
         :definitionWords="definitionWords"

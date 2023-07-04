@@ -19,7 +19,7 @@ const print = () => window.print();
 </script>
 
 <template>
-    <input type="text" class="crossword-title" v-model="title" placeholder="Title" />
+    <input type="text" class="crossword-title" v-model="title" :placeholder="i18n.t`Title`" />
 
     <CrosswordTable
         :rows="table"
@@ -36,7 +36,7 @@ const print = () => window.print();
         </ul>
     </section>
 
-    <input type="button" value="Print" @click="print" />
+    <input type="button" :value="i18n.t`Print`" @click="print" />
 </template>
 
 <style scoped>

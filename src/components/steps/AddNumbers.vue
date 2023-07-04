@@ -56,7 +56,7 @@ export default {
 </script>
 
 <template>
-    <input type="button" value="Auto add numbers" @click="autoAddNumbers">
+    <input type="button" :value="i18n.t`Auto add numbers`" @click="autoAddNumbers">
     <CrosswordTable
         :rows="table"
         :cellsEditable="false"

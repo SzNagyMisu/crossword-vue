@@ -69,7 +69,7 @@ export default {
     <input
         v-if="stepIdx > 0"
         type="button"
-        value="Back"
+        :value="i18n.t`Back`"
         @click="previousStep"
     />
     <input
@@ -77,7 +77,7 @@ export default {
         type="button"
         :disabled="!isCurrentStepValid"
         class="success"
-        value="Next"
+        :value="i18n.t`Next`"
         @click="nextStep"
     >
 
