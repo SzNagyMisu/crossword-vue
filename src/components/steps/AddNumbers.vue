@@ -10,9 +10,7 @@ export default {
         },
     },
     data () {
-        return {
-            addType: "number",
-        };
+        return {};
     },
     methods: {
         autoAddNumbers() {
@@ -31,19 +29,6 @@ export default {
             });
         },
         onCellClicked(cellClicked) {
-            switch (this.addType) {
-                case "number":
-                    this.toggleNumber(cellClicked);
-                    break;
-                case "turn-down":
-                    this.toggleTurn(cellClicked, "down");
-                    break;
-                case "turn-right":
-                    this.toggleTurn(cellClicked, "right");
-                    break;
-            }
-        },
-        toggleNumber(cellClicked) {
             let currentNr = 1;
             this.table.forEach(row => {
                 row.forEach(cell => {
