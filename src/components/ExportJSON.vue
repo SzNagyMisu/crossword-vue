@@ -9,7 +9,7 @@ export default {
     data() {
         return {
             showJSON: false,
-            copyButtonText: i18n.t`Copy`,
+            copyButtonText: this.i18n.t`Copy`,
         };
     },
     computed: {
@@ -28,8 +28,8 @@ export default {
             jsonContainer.select();
             navigator.clipboard.writeText(jsonContainer.value);
             jsonContainer.blur();
-            this.copyButtonText = i18n.t`Copied!`;
-            setTimeout(() => this.copyButtonText = i18n.t`Copy`, 5000);
+            this.copyButtonText = this.i18n.t`Copied!`;
+            setTimeout(() => this.copyButtonText = this.i18n.t`Copy`, 5000);
         },
     },
 }

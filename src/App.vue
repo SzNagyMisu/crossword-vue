@@ -1,4 +1,6 @@
 <script>
+import { i18n } from './i18n';
+
 import ImportJSON from './components/ImportJSON.vue';
 import ExportJSON from './components/ExportJSON.vue';
 import StepIndicator from './components/StepIndicator.vue';
@@ -15,56 +17,56 @@ import PrintPreview from './components/steps/PrintPreview.vue';
 const STEPS = [
     {
         id: "define-size",
-        title: this.i18n.t`Define size`,
-        description: this.i18n.t`Set the number of rows and columns`,
+        title: i18n.t`Define size`,
+        description: i18n.t`Set the number of rows and columns`,
         isValid({ table }) {
             return table.length && table[0].length;
         },
     },
     {
         id: "define-black-cells",
-        title: this.i18n.t`Define black cells`,
-        description: this.i18n.t`Click the cells to make them black - click again to revert`,
+        title: i18n.t`Define black cells`,
+        description: i18n.t`Click the cells to make them black - click again to revert`,
         isValid() {
             return true;
         },
     },
     {
         id: "define-solution-cells",
-        title: this.i18n.t`Define solution cells`,
-        description: this.i18n.t`Click the cells to make them highlighted as the solution line`,
+        title: i18n.t`Define solution cells`,
+        description: i18n.t`Click the cells to make them highlighted as the solution line`,
         isValid() {
             return true;
         },
     },
     {
         id: "add-numbers",
-        title: this.i18n.t`Add numbers`,
-        description: this.i18n.t`Click the cells to add or remove number`,
+        title: i18n.t`Add numbers`,
+        description: i18n.t`Click the cells to add or remove number`,
         isValid() {
             return true;
         },
     },
     {
         id: "add-turns",
-        title: this.i18n.t`Add turns`,
-        description: this.i18n.t`Click the cells to add or remove turns`,
+        title: i18n.t`Add turns`,
+        description: i18n.t`Click the cells to add or remove turns`,
         isValid() {
             return true;
         },
     },
     {
         id: "add-letters",
-        title: this.i18n.t`Add letters`,
-        description: this.i18n.t`Add letters to the cells that are not black`,
+        title: i18n.t`Add letters`,
+        description: i18n.t`Add letters to the cells that are not black`,
         isValid({ table }) {
             return table.every(row => row.every(cell => cell.isBlack || cell.value != null));
         },
     },
     {
         id: "add-definitions",
-        title: this.i18n.t`Add definitions`,
-        description: this.i18n.t`Add definitions to the numbers`,
+        title: i18n.t`Add definitions`,
+        description: i18n.t`Add definitions to the numbers`,
         isValid({ table, definitions }) {
             return table.every(row => (
                 row.every(cell => (
@@ -77,8 +79,8 @@ const STEPS = [
     },
     {
         id: "print-preview",
-        title: this.i18n.t`Print preview`,
-        description: this.i18n.t`Check how it looks like on paper and print eventually`,
+        title: i18n.t`Print preview`,
+        description: i18n.t`Check how it looks like on paper and print eventually`,
         isValid() {
             return true;
         },
