@@ -4,6 +4,7 @@ import { i18n } from './i18n';
 import ImportJSON from './components/ImportJSON.vue';
 import ExportJSON from './components/ExportJSON.vue';
 import StepIndicator from './components/StepIndicator.vue';
+import LanguageSelector from './components/LanguageSelector.vue';
 
 import SetSize from './components/steps/SetSize.vue';
 import BlackCells from './components/steps/BlackCells.vue';
@@ -92,6 +93,7 @@ export default {
         ImportJSON,
         ExportJSON,
         StepIndicator,
+        LanguageSelector,
 
         SetSize,
         BlackCells,
@@ -173,6 +175,7 @@ export default {
 <template>
     <h1>Crossword</h1>
 
+    <LanguageSelector />
     <ImportJSON @importJSON="importJSON" />
     <ExportJSON v-bind="{ stepIdx, table, definitions }" />
 

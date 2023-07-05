@@ -21,12 +21,14 @@ const i18nFactory = (translations, lang) => {
 };
 
 const DEFAULT_LANG = "en";
-const supportedLanguages = Object.keys(translations);
+export const supportedLanguages = Object.keys(translations);
+supportedLanguages.push("en");
 
 const getLang = () => {
-    const langInPathRegExp = new RegExp("/(" + supportedLanguages.join("|") + ")/$");
-    const langInPathMatch = window.location.pathname.match(langInPathRegExp);
-    return langInPathMatch[1] || DEFAULT_LANG;
-}
+    const searchParamsLang = new URLSearchParams(window.location.search).get('lang');
+    return supportedLanguages.includes(searchParamsLang) ? searchParamsLang : DEFAULT_LANG;
+};
 
-export const i18n = i18nFactory(translations, getLang());
+export const currentLang = getLang();
+
+export const i18n = i18nFactory(translations, currentLang);
